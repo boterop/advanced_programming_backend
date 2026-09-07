@@ -2,10 +2,18 @@ services:
   back:
     container_name: advanced-programming-backend
     build:
-      context: .
+      context: ./backend
       target: development
     environment:
       SPRING_PROFILES_ACTIVE: dev
     restart: unless-stopped
     ports:
-      - '8080:8080'
+      - 8080:8080
+  front:
+    container_name: advanced-programming-frontend
+    build:
+      context: ./frontend
+      target: development
+    restart: unless-stopped
+    ports:
+      - 3000:3000

@@ -1,0 +1,39 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    types: [closed, review_requested, ready_for_review, synchronize, opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: latest
+          run_install: false
+
+      - name: Set up node 26
+        uses: actions/setup-node@v6
+        with:
+          node-version: "26"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check code style
+        run: pnpm run lint
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Run Tests
+        run: echo "No tests"
